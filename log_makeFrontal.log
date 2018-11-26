@@ -1,0 +1,94 @@
+--- Analyzing --- ./Datasets/P0038
+Writing ./niftynet/data/dense_vnet_femur/0_Coronal.nii.gz from ./Datasets/P0038/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/0_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/1_Coronal.nii.gz from ./Datasets/P0038/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/1_Label.nii.gz
+--- Analyzing --- ./Datasets/P0026
+Writing ./niftynet/data/dense_vnet_femur/2_Coronal.nii.gz from ./Datasets/P0026/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/2_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/3_Coronal.nii.gz from ./Datasets/P0026/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/3_Label.nii.gz
+--- Analyzing --- ./Datasets/P0039
+Writing ./niftynet/data/dense_vnet_femur/4_Coronal.nii.gz from ./Datasets/P0039/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/4_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/5_Coronal.nii.gz from ./Datasets/P0039/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/5_Label.nii.gz
+--- Analyzing --- ./Datasets/P0017
+Writing ./niftynet/data/dense_vnet_femur/6_Coronal.nii.gz from ./Datasets/P0017/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/6_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/7_Coronal.nii.gz from ./Datasets/P0017/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/7_Label.nii.gz
+--- Analyzing --- ./Datasets/P0029
+Writing ./niftynet/data/dense_vnet_femur/8_Coronal.nii.gz from ./Datasets/P0029/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/8_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/9_Coronal.nii.gz from ./Datasets/P0029/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/9_Label.nii.gz
+--- Analyzing --- ./Datasets/P0033
+Writing ./niftynet/data/dense_vnet_femur/10_Coronal.nii.gz from ./Datasets/P0033/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/10_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/11_Coronal.nii.gz from ./Datasets/P0033/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/11_Label.nii.gz
+--- Analyzing --- ./Datasets/P0001
+Writing ./niftynet/data/dense_vnet_femur/12_Coronal.nii.gz from ./Datasets/P0001/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/12_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/13_Coronal.nii.gz from ./Datasets/P0001/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/13_Label.nii.gz
+--- Analyzing --- ./Datasets/P0012
+Writing ./niftynet/data/dense_vnet_femur/14_Coronal.nii.gz from ./Datasets/P0012/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/14_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/15_Coronal.nii.gz from ./Datasets/P0012/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/15_Label.nii.gz
+--- Analyzing --- ./Datasets/P0031
+Writing ./niftynet/data/dense_vnet_femur/16_Coronal.nii.gz from ./Datasets/P0031/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/16_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/17_Coronal.nii.gz from ./Datasets/P0031/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/17_Label.nii.gz
+--- Analyzing --- ./Datasets/P0028
+Writing ./niftynet/data/dense_vnet_femur/18_Coronal.nii.gz from ./Datasets/P0028/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/18_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/19_Coronal.nii.gz from ./Datasets/P0028/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/19_Label.nii.gz
+--- Analyzing --- ./Datasets/P0037
+Writing ./niftynet/data/dense_vnet_femur/20_Coronal.nii.gz from ./Datasets/P0037/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/20_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/21_Coronal.nii.gz from ./Datasets/P0037/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/21_Label.nii.gz
+--- Analyzing --- ./Datasets/P0022
+Writing ./niftynet/data/dense_vnet_femur/22_Coronal.nii.gz from ./Datasets/P0022/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/22_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/23_Coronal.nii.gz from ./Datasets/P0022/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/23_Label.nii.gz
+There is no ./Datasets/P0011/coronal.gipl
+--- Analyzing --- ./Datasets/P0034
+Writing ./niftynet/data/dense_vnet_femur/24_Coronal.nii.gz from ./Datasets/P0034/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/24_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/25_Coronal.nii.gz from ./Datasets/P0034/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/25_Label.nii.gz
+--- Analyzing --- ./Datasets/P0002
+Writing ./niftynet/data/dense_vnet_femur/26_Coronal.nii.gz from ./Datasets/P0002/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/26_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/27_Coronal.nii.gz from ./Datasets/P0002/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/27_Label.nii.gz
+There is no ./Datasets/P0004/femurseg.gipl
+--- Analyzing --- ./Datasets/P0032
+Writing ./niftynet/data/dense_vnet_femur/28_Coronal.nii.gz from ./Datasets/P0032/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/28_Label.nii.gz
+Unexpected error: <class 'ValueError'>
+--- Analyzing --- ./Datasets/P0008
+Unexpected error: <class 'ValueError'>
+--- Analyzing --- ./Datasets/P0018
+Writing ./niftynet/data/dense_vnet_femur/29_Coronal.nii.gz from ./Datasets/P0018/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/29_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/30_Coronal.nii.gz from ./Datasets/P0018/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/30_Label.nii.gz
+--- Analyzing --- ./Datasets/P0013
+Writing ./niftynet/data/dense_vnet_femur/31_Coronal.nii.gz from ./Datasets/P0013/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/31_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/32_Coronal.nii.gz from ./Datasets/P0013/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/32_Label.nii.gz
+--- Analyzing --- ./Datasets/P0005
+Writing ./niftynet/data/dense_vnet_femur/33_Coronal.nii.gz from ./Datasets/P0005/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/33_Label.nii.gz
+Writing ./niftynet/data/dense_vnet_femur/34_Coronal.nii.gz from ./Datasets/P0005/femurseg.gipl
+Writing ./niftynet/data/dense_vnet_femur/34_Label.nii.gz
+
