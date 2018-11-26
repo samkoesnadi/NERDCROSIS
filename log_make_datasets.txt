@@ -1,0 +1,104 @@
+Analyzing ./Datasets/P0032
+Writing ./niftynet/data/0_Coronal.nii.gz from ./Datasets/P0032/femurseg.gipl
+Writing ./niftynet/data/0_Label.nii.gz
+Writing ./niftynet/data/1_Coronal.nii.gz from ./Datasets/P0032/femurseg.gipl
+Writing ./niftynet/data/1_Label.nii.gz
+sjsakoes@lab13:~/Nerdcrosis$ python3 ROI.py
+Analyzing ./Datasets/P0038
+Writing ./niftynet/data/0_Coronal.nii.gz from ./Datasets/P0038/femurseg.gipl
+Writing ./niftynet/data/0_Label.nii.gz
+Writing ./niftynet/data/1_Coronal.nii.gz from ./Datasets/P0038/femurseg.gipl
+Writing ./niftynet/data/1_Label.nii.gz
+Analyzing ./Datasets/P0026
+Writing ./niftynet/data/2_Coronal.nii.gz from ./Datasets/P0026/femurseg.gipl
+Writing ./niftynet/data/2_Label.nii.gz
+Writing ./niftynet/data/3_Coronal.nii.gz from ./Datasets/P0026/femurseg.gipl
+Writing ./niftynet/data/3_Label.nii.gz
+Analyzing ./Datasets/P0039
+Writing ./niftynet/data/4_Coronal.nii.gz from ./Datasets/P0039/femurseg.gipl
+Writing ./niftynet/data/4_Label.nii.gz
+Writing ./niftynet/data/5_Coronal.nii.gz from ./Datasets/P0039/femurseg.gipl
+Writing ./niftynet/data/5_Label.nii.gz
+Analyzing ./Datasets/P0017
+Writing ./niftynet/data/6_Coronal.nii.gz from ./Datasets/P0017/femurseg.gipl
+Writing ./niftynet/data/6_Label.nii.gz
+Writing ./niftynet/data/7_Coronal.nii.gz from ./Datasets/P0017/femurseg.gipl
+Writing ./niftynet/data/7_Label.nii.gz
+Analyzing ./Datasets/P0029
+Writing ./niftynet/data/8_Coronal.nii.gz from ./Datasets/P0029/femurseg.gipl
+Writing ./niftynet/data/8_Label.nii.gz
+Writing ./niftynet/data/9_Coronal.nii.gz from ./Datasets/P0029/femurseg.gipl
+Writing ./niftynet/data/9_Label.nii.gz
+Analyzing ./Datasets/P0033
+Writing ./niftynet/data/10_Coronal.nii.gz from ./Datasets/P0033/femurseg.gipl
+Writing ./niftynet/data/10_Label.nii.gz
+Writing ./niftynet/data/11_Coronal.nii.gz from ./Datasets/P0033/femurseg.gipl
+Writing ./niftynet/data/11_Label.nii.gz
+Analyzing ./Datasets/P0001
+Writing ./niftynet/data/12_Coronal.nii.gz from ./Datasets/P0001/femurseg.gipl
+Writing ./niftynet/data/12_Label.nii.gz
+Writing ./niftynet/data/13_Coronal.nii.gz from ./Datasets/P0001/femurseg.gipl
+Writing ./niftynet/data/13_Label.nii.gz
+Analyzing ./Datasets/P0012
+Writing ./niftynet/data/14_Coronal.nii.gz from ./Datasets/P0012/femurseg.gipl
+Writing ./niftynet/data/14_Label.nii.gz
+Writing ./niftynet/data/15_Coronal.nii.gz from ./Datasets/P0012/femurseg.gipl
+Writing ./niftynet/data/15_Label.nii.gz
+Analyzing ./Datasets/P0031
+Writing ./niftynet/data/16_Coronal.nii.gz from ./Datasets/P0031/femurseg.gipl
+Writing ./niftynet/data/16_Label.nii.gz
+Writing ./niftynet/data/17_Coronal.nii.gz from ./Datasets/P0031/femurseg.gipl
+Writing ./niftynet/data/17_Label.nii.gz
+Analyzing ./Datasets/P0028
+Writing ./niftynet/data/18_Coronal.nii.gz from ./Datasets/P0028/femurseg.gipl
+Writing ./niftynet/data/18_Label.nii.gz
+Writing ./niftynet/data/19_Coronal.nii.gz from ./Datasets/P0028/femurseg.gipl
+Writing ./niftynet/data/19_Label.nii.gz
+Analyzing ./Datasets/P0037
+Writing ./niftynet/data/20_Coronal.nii.gz from ./Datasets/P0037/femurseg.gipl
+Writing ./niftynet/data/20_Label.nii.gz
+Writing ./niftynet/data/21_Coronal.nii.gz from ./Datasets/P0037/femurseg.gipl
+Writing ./niftynet/data/21_Label.nii.gz
+Analyzing ./Datasets/P0022
+Writing ./niftynet/data/22_Coronal.nii.gz from ./Datasets/P0022/femurseg.gipl
+Writing ./niftynet/data/22_Label.nii.gz
+Writing ./niftynet/data/23_Coronal.nii.gz from ./Datasets/P0022/femurseg.gipl
+Writing ./niftynet/data/23_Label.nii.gz
+There is no ./Datasets/P0011/coronal.gipl
+Analyzing ./Datasets/P0034
+Writing ./niftynet/data/24_Coronal.nii.gz from ./Datasets/P0034/femurseg.gipl
+Writing ./niftynet/data/24_Label.nii.gz
+Writing ./niftynet/data/25_Coronal.nii.gz from ./Datasets/P0034/femurseg.gipl
+Writing ./niftynet/data/25_Label.nii.gz
+Analyzing ./Datasets/P0002
+Writing ./niftynet/data/26_Coronal.nii.gz from ./Datasets/P0002/femurseg.gipl
+Writing ./niftynet/data/26_Label.nii.gz
+Writing ./niftynet/data/27_Coronal.nii.gz from ./Datasets/P0002/femurseg.gipl
+Writing ./niftynet/data/27_Label.nii.gz
+There is no ./Datasets/P0004/femurseg.gipl
+Analyzing ./Datasets/P0032
+Writing ./niftynet/data/28_Coronal.nii.gz from ./Datasets/P0032/femurseg.gipl
+Writing ./niftynet/data/28_Label.nii.gz
+Writing ./niftynet/data/29_Coronal.nii.gz from ./Datasets/P0032/femurseg.gipl
+Writing ./niftynet/data/29_Label.nii.gz
+Analyzing ./Datasets/P0008
+Writing ./niftynet/data/30_Coronal.nii.gz from ./Datasets/P0008/femurseg.gipl
+Writing ./niftynet/data/30_Label.nii.gz
+Writing ./niftynet/data/31_Coronal.nii.gz from ./Datasets/P0008/femurseg.gipl
+Writing ./niftynet/data/31_Label.nii.gz
+Analyzing ./Datasets/P0018
+Writing ./niftynet/data/32_Coronal.nii.gz from ./Datasets/P0018/femurseg.gipl
+Writing ./niftynet/data/32_Label.nii.gz
+Writing ./niftynet/data/33_Coronal.nii.gz from ./Datasets/P0018/femurseg.gipl
+Writing ./niftynet/data/33_Label.nii.gz
+Analyzing ./Datasets/P0013
+Writing ./niftynet/data/34_Coronal.nii.gz from ./Datasets/P0013/femurseg.gipl
+Writing ./niftynet/data/34_Label.nii.gz
+Writing ./niftynet/data/35_Coronal.nii.gz from ./Datasets/P0013/femurseg.gipl
+Writing ./niftynet/data/35_Label.nii.gz
+Analyzing ./Datasets/P0005
+Writing ./niftynet/data/36_Coronal.nii.gz from ./Datasets/P0005/femurseg.gipl
+Writing ./niftynet/data/36_Label.nii.gz
+Writing ./niftynet/data/37_Coronal.nii.gz from ./Datasets/P0005/femurseg.gipl
+Writing ./niftynet/data/37_Label.nii.gz
+

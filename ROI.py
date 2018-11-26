@@ -27,14 +27,12 @@ which_patients = listdir(directory_of_datasets)
 
 z = 48
 n = 512 #Side length of square image
-pad_ = 5
-pad_out = 5
+pad_out_percentage = 20
 
 if __name__ == '__main__':
     file_index = 0
+    #which_patients = ["P0032"]
     for which_patient in which_patients:
-        # which_patient = "P0002"
-
         dir_patient = join(directory_of_datasets,which_patient)
         output_dir = join(output_dir_0, which_patient)
         for fi in onlyfiles: # fi is the file that we want to convert, e.g. t1_tse_cor.gipl
@@ -45,26 +43,28 @@ if __name__ == '__main__':
             print('Analyzing',(dir_patient))
             itk_image = itk.imread(join(dir_patient,fi))
             ori_image = itk.imread(join(dir_patient, ori_image_filename))# this is the original MRI Pic
-
+            
+            
             # Copy of itk.Image, data is copied
             segment = itk.GetArrayFromImage(itk_image) # here is the variable for segmented image
-            # segment = np.pad(segment,(pad_),'minimum')
+            pad_ = int(pad_out_percentage/100*(segment.shape[0]//4))
+            segment = np.pad(segment,(pad_),'minimum')
             segment_255 = np.interp(segment, (segment.min(), segment.max()), (0, 255))
             segment_255 = segment_255.astype(np.uint8)
 
 
             ori_arr = itk.GetArrayFromImage(ori_image)
-            # ori_arr = np.pad(ori_arr,(pad_),'symmetric')
+            ori_arr = np.pad(ori_arr,(pad_),'edge')
 
             for c in findBoundBox(segment_255):
-                y_n = c[1][1]-(c[0][1]-pad_out*4)
-                x_n = c[1][0]+pad_out*4-(c[0][0]-pad_out*4)
+                y_n = c[1][1]-(c[0][1]-pad_)
+                x_n = c[1][0]+pad_-(c[0][0]-pad_)
                 ins = np.zeros((segment.shape[0],y_n,x_n))
                 in_seg = np.zeros((segment.shape[0],y_n,x_n))
 
                 for i in range(segment.shape[0]):
-                    out_raw = ori_arr[i, c[0][1]-pad_out*4:c[1][1], c[0][0]-pad_out*4:c[1][0]+pad_out*4]
-                    out_raw_seg = segment[i, c[0][1]-pad_out*4:c[1][1], c[0][0]-pad_out*4:c[1][0]+pad_out*4]
+                    out_raw = ori_arr[i, c[0][1]-pad_:c[1][1], c[0][0]-pad_:c[1][0]+pad_]
+                    out_raw_seg = segment[i, c[0][1]-pad_:c[1][1], c[0][0]-pad_:c[1][0]+pad_]
                     if (c[2]=='l'):
                         out_finish = out_raw
                     else:
@@ -73,7 +73,7 @@ if __name__ == '__main__':
 
                     ins[i] = out_finish
                     in_seg[i] = out_raw_seg
-                (out, out_seg) = interpolate_toNifti(ins,in_seg,x_n*2,y_n*2,z)
+                (out, out_seg) = interpolate_toNifti(ins,in_seg,x_n,y_n,z)
 
                 outNifti = nib.Nifti1Image(out, affine=np.eye(4))
                 outNifti_seg = nib.Nifti1Image(out_seg, affine=np.eye(4))
