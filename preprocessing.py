@@ -5,16 +5,18 @@ Lukas and Samuel 5.11.2018
 '''
 
 import itk
-import nibabel as nib
 import numpy as np
-import uuid
 import cv2 as cv
 from math import floor, ceil
 from os import listdir, makedirs
 from os.path import isfile, join, exists
 from re import search
 from bound_box import findBoundBox
-from interpolate import interpolate_toNifti
+from interpolate import interpolate
+from scipy.ndimage.morphology import distance_transform_edt
+from skimage.segmentation import find_boundaries
+
+W_0, SIGMA = 10, 5
 
 directory_of_datasets = "./Datasets" #datasets folder
 picture_save_dir = 'data'
@@ -24,6 +26,7 @@ onlyfiles = ["femurseg.gipl"]# this is the files names that you want to extract
 postfix_ori_out = "Coronal"
 postfix_seg_out = "Label"
 which_patients = listdir(directory_of_datasets)
+exclude_patients = ["P0011","P0013","P0018"]
 
 z = 48
 n = 512 #Side length of square image
@@ -31,8 +34,9 @@ pad_out_percentage = 20
 
 if __name__ == '__main__':
     file_index = 0
-    #which_patients = ["P0032"]
+    # which_patients = ["P0032"]
     for which_patient in which_patients:
+        if (which_patient in exclude_patients): continue
         dir_patient = join(directory_of_datasets,which_patient)
         output_dir = join(output_dir_0, which_patient)
         for fi in onlyfiles: # fi is the file that we want to convert, e.g. t1_tse_cor.gipl
@@ -54,32 +58,23 @@ if __name__ == '__main__':
 
 
             ori_arr = itk.GetArrayFromImage(ori_image)
-            ori_arr = np.pad(ori_arr,(pad_),'edge')
+            ori, segment = interpolate(ori_arr, segment, 560, 560, 224)
 
-            for c in findBoundBox(segment_255):
-                y_n = c[1][1]-(c[0][1]-pad_)
-                x_n = c[1][0]+pad_-(c[0][0]-pad_)
-                ins = np.zeros((segment.shape[0],y_n,x_n))
-                in_seg = np.zeros((segment.shape[0],y_n,x_n))
+            segment = segment.astype(np.uint8)
+            ori = ori.astype(np.float32)
 
-                for i in range(segment.shape[0]):
-                    out_raw = ori_arr[i, c[0][1]-pad_:c[1][1], c[0][0]-pad_:c[1][0]+pad_]
-                    out_raw_seg = segment[i, c[0][1]-pad_:c[1][1], c[0][0]-pad_:c[1][0]+pad_]
-                    if (c[2]=='l'):
-                        out_finish = out_raw
-                    else:
-                        out_finish = np.flip(out_raw,1)
-                        out_raw_seg = np.flip(out_raw_seg,1)
+            new_segment = itk.GetImageFromArray(segment)
+            new_ori = itk.GetImageFromArray(ori)
 
-                    ins[i] = out_finish
-                    in_seg[i] = out_raw_seg
-                (out, out_seg) = interpolate_toNifti(ins,in_seg,x_n,y_n,z)
+            dimension = new_ori.GetImageDimension()
+            InputImageType = type(new_ori)
+            OutputImageType = type(itk_image)
 
-                outNifti = nib.Nifti1Image(out, affine=np.eye(4))
-                outNifti_seg = nib.Nifti1Image(out_seg, affine=np.eye(4))
+            #casting oti
+            cast_new_ori = itk.CastImageFilter[InputImageType, OutputImageType].New(new_ori)
 
-                print("Writing",join(output_dir_0,str(file_index)+'_'+postfix_ori_out+'.nii.gz'),'from',join(dir_patient,fi))
-                nib.save(outNifti, join(output_dir_0,str(file_index)+'_'+postfix_ori_out+'.nii.gz'))
-                print("Writing",join(output_dir_0,str(file_index)+'_'+postfix_seg_out+'.nii.gz'))
-                nib.save(outNifti_seg, join(output_dir_0,str(file_index)+'_'+postfix_seg_out+'.nii.gz'))
-                file_index += 1
+            print("Writing",join(output_dir_0,str(file_index)+'_'+postfix_ori_out+'.gipl'),'from',join(dir_patient,fi))
+            itk.imwrite(cast_new_ori, join(output_dir_0,str(file_index)+'_'+postfix_ori_out+'.gipl'))
+            print("Writing",join(output_dir_0,str(file_index)+'_'+postfix_seg_out+'.gipl'))
+            itk.imwrite(new_segment, join(output_dir_0,str(file_index)+'_'+postfix_seg_out+'.gipl'))
+            file_index += 1

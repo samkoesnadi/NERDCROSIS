@@ -4,3 +4,15 @@ Results filename format
 
 Transversal Data:
 P0013
+
+
+---------------------------------
+Clustering technic to detect neucrosis
+- Color and position space...
+[x,y,color]
+
+
+- DBSCAN <- it works
+- Ward <- meh
+- Agglomerative Clustering
+- Gaussian Mixture <- good one
