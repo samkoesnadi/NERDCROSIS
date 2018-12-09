@@ -4,7 +4,6 @@ import scipy
 from skimage.segmentation import find_boundaries
 from scipy.ndimage.morphology import distance_transform_edt
 from scipy.ndimage import binary_erosion
-from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 from scipy import ndimage
 
@@ -102,7 +101,6 @@ cv.drawContours(mask, [rotated_max_contour], -1, 2, -1)
 raced = racing_pixel(mask.copy(), n=1, alpha=0.9, beta=0.3, mode='constant', seperate_left_right=False)
 
 raced_res = np.bitwise_and(raced, (1-thresholded))
-
 # distance_transform_edt
 distance = ndimage.distance_transform_edt(raced_res)
 # plt.imshow(distance), plt.colorbar(),plt.show()
