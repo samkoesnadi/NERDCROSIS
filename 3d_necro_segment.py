@@ -9,6 +9,11 @@ from mpl_toolkits.mplot3d import Axes3D
 from scipy import ndimage
 
 # read the image
+from os import listdir
+from os.path import isfile, join
+mypath = 
+segment_filenames = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+
 oris_itk = itk.imread("niftynet/data/2_Coronal.gipl", 0)
 labels_itk = itk.imread("niftynet/data/2_Label.gipl", 0)
 oris = itk.GetArrayFromImage(oris_itk)
@@ -56,7 +61,7 @@ labels_ready = np.array(labels_ready)
 # # take first label as experiment
 # find line to check the rotation angle
 labels = labels/labels.max()
-for label_ready in labels_ready:
+for i, label_ready in enumerate(labels_ready):
 
     # now output the ROI
     x_axis0 = label_ready[...,2]
@@ -82,6 +87,7 @@ for label_ready in labels_ready:
     index = 0
     for ori, label in zip(ori_ROI,label_ROI):
         end_label = necro_segment(label, ori, threshold)
+        end_label[end_label>0] += index
         end_label_3d[index] = (end_label)
         index += 1
     labels[z_axis0.min():z_axis0.max()+1,y_axis0.min():y_axis0.max()+1,x_axis0.min():x_axis0.max()+1] = end_label_3d
