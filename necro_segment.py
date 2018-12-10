@@ -5,138 +5,156 @@ from skimage.segmentation import find_boundaries
 from scipy.ndimage.morphology import distance_transform_edt
 from scipy.ndimage import binary_erosion
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 from scipy import ndimage
-
-# read the image
-label = cv.imread("sample_2ds/2_Label.png",0)
-ori = cv.imread("sample_2ds/2.png",0)
-
-pad = 50
-label = np.pad(label, (pad,), 'mean')
-ori = np.pad(ori, (pad,), 'mean')
-# # find label contour (the outter skin)
-_, contours, _ = cv.findContours(label, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
-max_contour_outter = 0
-for i, cnt in enumerate(contours):
-    area = cv.contourArea(cnt)
-    area_ref = cv.contourArea(contours[max_contour_outter])
-    # print(area, area_ref)
-    if (area > area_ref): max_contour_outter = i
-max_contour_outter = contours[max_contour_outter]
-
-# find line to check the rotation angle
-from math import atan,pi
-from skimage.transform import rotate
-rows,cols = label.shape[:2]
-[vx,vy,x,y] = cv.fitLine(max_contour_outter, cv.DIST_L2, 0,0.01,0.01)
-lefty = int((-x*vy/vx) + y)
-righty = int(((cols-x)*vy/vx)+y)
-# cv.line(label,(cols-1,righty),(0,lefty),(0,255,0),2)
-
-tetha = atan(vy/vx)/pi*180
-
-#rotate it with tetha+90
-new_label = rotate(label, tetha+90,clip=True)
-rotated_label = new_label.copy()
-new_ori = rotate(ori, tetha+90, mode="edge",clip=True)
-rotated_ori = new_ori.copy()
-# plt.imshow(new_ori), plt.show()
-
-# convert label to boolean data type (1 and 0)
-label = new_label.astype(np.uint8)
-label[label!=1] = 0
-label_bool = label.astype(np.bool_)
-label_int = label.astype(np.int_)
-
-# find label contour (the outter skin) for the new image (rotated)
-_, contours, _ = cv.findContours(label, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
-rotated_max_contour_outter = 0
-for i, cnt in enumerate(contours):
-    area = cv.contourArea(cnt)
-    area_ref = cv.contourArea(contours[rotated_max_contour_outter])
-    # print(area, area_ref)
-    if (area > area_ref): rotated_max_contour_outter = i
-rotated_max_contour_outter = contours[rotated_max_contour_outter]
-
-# Region the new_ori and also label to roi_ori
-c = rotated_max_contour_outter
-extLeft = tuple(c[c[:, :, 0].argmin()][0])
-extRight = tuple(c[c[:, :, 0].argmax()][0])
-extTop = tuple(c[c[:, :, 1].argmin()][0])
-extBot = tuple(c[c[:, :, 1].argmax()][0])
-
-size = extRight[0]-extLeft[0]
-n = 10
-roi_label = label[extTop[1]-n:extTop[1]+size+n,extLeft[0]-n:extRight[0]+n]
-roi_ori = new_ori[extTop[1]-n:extTop[1]+size+n,extLeft[0]-n:extRight[0]+n]
-# plt.imshow(roi_label),plt.colorbar(),plt.show()
-# plt.imshow(roi_label),plt.colorbar(),plt.show()
-
-# OTSU Thresholding
 from skimage.filters import threshold_otsu
-threshold = threshold_otsu(roi_ori)
-thresholded = roi_ori > threshold
-# plt.imshow(thresholded),plt.show()
 
-# # inner flesh
-how_much_deep = 8
-inner_flesh = cv.erode(roi_label, np.ones((10,10),np.uint8),iterations = how_much_deep)
-inner_flesh = thresholded | inner_flesh
+def necro_segment(label, ori, threshold):
+    ori = (ori/ori.max()*255).astype(np.uint8)
+    label = (label/label.max()*255).astype(np.uint8)
 
-# Racing pixels procedure
-from racing_pixel import racing_pixel
-mask = roi_label.copy()
+    # plt.subplot(1, 2, 1)
+    # plt.imshow(ori), plt.colorbar()
+    #
+    # plt.subplot(1, 2, 2)
+    # plt.imshow(label), plt.colorbar()
+    #
+    # plt.show()
 
-_, contours, _ = cv.findContours(inner_flesh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
-rotated_max_contour = 0
-for i, cnt in enumerate(contours):
-    area = cv.contourArea(cnt)
-    area_ref = cv.contourArea(contours[rotated_max_contour])
-    # print(area, area_ref)
-    if (area > area_ref): rotated_max_contour = i
-rotated_max_contour = contours[rotated_max_contour]
-mask = cv.erode(mask, np.ones((5,5),np.uint8),iterations = 1)
-cv.drawContours(mask, [rotated_max_contour], -1, 2, -1)
+    # threshold = threshold_otsu(ori/255)
+    # print(threshold)
 
-raced = racing_pixel(mask.copy(), n=1, alpha=0.9, beta=0.3, mode='constant', seperate_left_right=False)
+    pad = 50
+    label = np.pad(label, (pad,), 'mean')
+    ori = np.pad(ori, (pad,), 'mean')
+    # # find label contour (the outter skin)
+    # plt.imshow(label), plt.show()
+    _, contours, _ = cv.findContours(label, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    max_contour_outter = 0
+    for i, cnt in enumerate(contours):
+        area = cv.contourArea(cnt)
+        area_ref = cv.contourArea(contours[max_contour_outter])
+        # print(area, area_ref)
+        if (area > area_ref): max_contour_outter = i
+    max_contour_outter = contours[max_contour_outter]
 
-raced_res = np.bitwise_and(raced, (1-thresholded))
-# distance_transform_edt
-distance = ndimage.distance_transform_edt(raced_res)
-# plt.imshow(distance), plt.colorbar(),plt.show()
-distance = distance/distance.max()
+    # find line to check the rotation angle
+    from math import atan,pi
+    from skimage.transform import rotate
+    rows,cols = label.shape[:2]
+    [vx,vy,x,y] = cv.fitLine(max_contour_outter, cv.DIST_L2, 0,0.01,0.01)
+    lefty = int((-x*vy/vx) + y)
+    righty = int(((cols-x)*vy/vx)+y)
+    # cv.line(label,(cols-1,righty),(0,lefty),(0,255,0),2)
+    # plt.imshow(label), plt.show()
+    tetha = atan(vy/vx)/pi*180
+    #rotate it with tetha+90
+    new_label = rotate(label, tetha+90, clip=True)
+    rotated_label = new_label.copy()
+    new_ori = rotate(ori, tetha+90, mode="edge",clip=True)
+    rotated_ori = new_ori.copy()
 
-# plt.imshow(distance);plt.show()
+    # convert label to boolean data type (1 and 0)
+    label = new_label.astype(np.uint8)
+    label[label!=1] = 0
+    label_bool = label.astype(np.bool_)
+    label_int = label.astype(np.int_)
 
-#Last
-distance_255 = (distance*255).astype(np.uint8)
-roi_ori = (roi_ori/roi_ori.max()*255)
-# plt.imshow(roi_ori+distance);plt.show()
-# ori_now = roi_ori+distance_255
-ori_now = roi_ori
-# plt.imshow(new_ori);plt.show()
+    # find label contour (the outter skin) for the new image (rotated)
+    _, contours, _ = cv.findContours(label, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    rotated_max_contour_outter = 0
+    for i, cnt in enumerate(contours):
+        area = cv.contourArea(cnt)
+        area_ref = cv.contourArea(contours[rotated_max_contour_outter])
+        # print(area, area_ref)
+        if (area > area_ref): rotated_max_contour_outter = i
+    rotated_max_contour_outter = contours[rotated_max_contour_outter]
 
-# rotate it back
+    # Region the new_ori and also label to roi_ori
+    c = rotated_max_contour_outter
+    extLeft = tuple(c[c[:, :, 0].argmin()][0])
+    extRight = tuple(c[c[:, :, 0].argmax()][0])
+    extTop = tuple(c[c[:, :, 1].argmin()][0])
+    extBot = tuple(c[c[:, :, 1].argmax()][0])
 
-rotated_ori = rotated_ori/rotated_ori.max()*255
-rotated_label[extTop[1]-n:extTop[1]+size+n,extLeft[0]-n:extRight[0]+n] += distance
-rotated_ori[extTop[1]-n:extTop[1]+size+n,extLeft[0]-n:extRight[0]+n] = ori_now
+    size = extRight[0]-extLeft[0]
+    n = 10
+    roi_label = label[extTop[1]-n:extTop[1]+size+n,extLeft[0]-n:extRight[0]+n]
+    roi_ori = new_ori[extTop[1]-n:extTop[1]+size+n,extLeft[0]-n:extRight[0]+n]
+    # plt.imshow(roi_label),plt.colorbar(),plt.show()
+    # plt.imshow(roi_label),plt.colorbar(),plt.show()
 
-# # rotate it with tetha-90
-end_label = rotate(rotated_label, -tetha-90)
-end_ori = rotate(rotated_ori, -tetha-90, mode="edge")
+    # OTSU Thresholding
+    # from skimage.filters import threshold_otsu
+    # threshold = threshold_otsu(roi_ori)
+    thresholded = roi_ori > threshold
+    # plt.imshow(thresholded),plt.show()
 
-end_label = end_label[pad:-pad,pad:-pad]
-end_ori = end_ori[pad:-pad,pad:-pad]
+    # # inner flesh
+    how_much_deep = 8
+    inner_flesh = cv.erode(roi_label, np.ones((10,10),np.uint8),iterations = how_much_deep)
+    inner_flesh = thresholded | inner_flesh
 
-plt.subplot(1, 2, 1)
-plt.imshow(end_ori), plt.colorbar()
+    # Racing pixels procedure
+    from racing_pixel import racing_pixel
+    mask = roi_label.copy()
 
-plt.subplot(1, 2, 2)
-plt.imshow(end_label), plt.colorbar()
+    _, contours, _ = cv.findContours(inner_flesh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    rotated_max_contour = 0
+    for i, cnt in enumerate(contours):
+        area = cv.contourArea(cnt)
+        area_ref = cv.contourArea(contours[rotated_max_contour])
+        # print(area, area_ref)
+        if (area > area_ref): rotated_max_contour = i
+    rotated_max_contour = contours[rotated_max_contour]
+    mask = cv.erode(mask, np.ones((5,5),np.uint8),iterations = 1)
+    cv.drawContours(mask, [rotated_max_contour], -1, 2, -1)
+    # plt.imshow(mask), plt.show()
 
-plt.show()
-# plt.imshow(end_label);plt.show()
+    try:
+        raced = racing_pixel(mask.copy(), n=1, alpha=0.9, beta=0.3, mode='constant', seperate_left_right=False)
+    except:
+        raced = mask
+    raced_res = np.bitwise_and(raced, (1-thresholded))
+    # plt.imshow(raced_res), plt.show()
+    # distance_transform_edt
+    distance = ndimage.distance_transform_edt(raced_res)
+    # plt.imshow(distance), plt.colorbar(),plt.show()
+    distance = distance/distance.max() if distance.max()!=0 else distance
+
+    # plt.imshow(distance);plt.show()
+
+    #Last
+    distance_255 = (distance*255).astype(np.uint8)
+    roi_ori = (roi_ori/roi_ori.max()*255)
+    # plt.imshow(roi_ori+distance);plt.show()
+    # ori_now = roi_ori+distance_255
+    ori_now = roi_ori
+    # plt.imshow(new_ori);plt.show()
+
+    # rotate it back
+
+    rotated_ori = rotated_ori/rotated_ori.max()*255
+    rotated_label[extTop[1]-n:extTop[1]+size+n,extLeft[0]-n:extRight[0]+n] += distance
+    rotated_ori[extTop[1]-n:extTop[1]+size+n,extLeft[0]-n:extRight[0]+n] = ori_now
+
+    # # rotate it with tetha-90
+    end_label = rotate(rotated_label, -tetha-90)
+    end_ori = rotate(rotated_ori, -tetha-90, mode="edge")
+    # end_label = rotated_label
+    # end_ori = rotated_ori
+
+    end_label = end_label[pad:-pad,pad:-pad]
+    end_ori = end_ori[pad:-pad,pad:-pad]
+
+    # plt.subplot(1, 2, 1)
+    # plt.imshow(end_ori), plt.colorbar()
+    #
+    # plt.subplot(1, 2, 2)
+    # plt.imshow(end_label), plt.colorbar()
+    #
+    # plt.show()
+    return end_label
 
 
 

@@ -92,6 +92,7 @@ def racing_pixel(source, n=1, alpha=0.7, beta=0.5, seperate_left_right=False, mo
         part[part>1] = 1 # important
         av_middle = ceil(middle[0]//middle[1]) if middle[1]!= 0 else 0#middle to seperate left and right
         if (av_middle == 0):
+            # print(left_max,right_max)
             average = ceil(alpha*(left[0]+right[0])//(left[1]+right[1]) + (1-alpha)*max(left_max,right_max))
             average = ceil((beta)*average+(1-beta)*global_average)
 
