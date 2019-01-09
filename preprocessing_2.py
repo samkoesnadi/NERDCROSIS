@@ -111,7 +111,7 @@ def d_necro_seg(oris, labels):
 # read the image
 from os import listdir
 from os.path import isfile, join
-mypath = 'niftynet/temp'
+mypath = 'niftynet/data'
 oris_path = "niftynet/data/"
 segment_filenames = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
@@ -141,5 +141,5 @@ for segment_filename in segment_filenames:
     # OutputImageType = type(oris_itk)
     # cast_new_segment = itk.CastImageFilter[InputImageType, OutputImageType].New(new_segment)
 
-    print("Writing neucro segment in ",join(mypath, prefix+"_necro_segment.gipl"))
-    itk.imwrite(new_segment, join(mypath, prefix+"_necro_segment.gipl"))
+    print("Writing neucro segment in ",join(mypath, prefix+"_Label.gipl"))
+    itk.imwrite(new_segment, join(mypath, prefix+"_Label.gipl"))

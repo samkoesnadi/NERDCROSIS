@@ -19,6 +19,9 @@ Clustering technic to detect neucrosis
 - Gaussian Mixture <- good one
 
 
+///////////////// idea ///////////// 2019
+1. change dataset to be more specific
+2. train a machine learning to learn color histogram distribution or fft
 
 
 //// Unused ////
