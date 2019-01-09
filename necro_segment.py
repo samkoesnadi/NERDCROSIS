@@ -54,7 +54,7 @@ def femurhead_segment(label, ori, threshold):
     #print(tetha_fst)
     #rotate it with tetha+90
     new_label = rotate(label, tetha_fst, clip=True)
-    rotated_label = new_label.copy()
+    rotated_label = np.zeros_like(new_label)
     new_ori = rotate(ori, tetha_fst, mode="edge",clip=True)
     rotated_ori = new_ori.copy()
     #plt.imshow(new_label), plt.show()
@@ -121,28 +121,15 @@ def femurhead_segment(label, ori, threshold):
         raced = racing_pixel(mask.copy(), n=1, alpha=0.9, beta=0.3, mode='constant', seperate_left_right=False)
     except:
         raced = mask
-    plt.imshow(raced), plt.show()
-    import sys
-    sys.exit()
-    # distance_transform_edt
-    distance = ndimage.distance_transform_edt(raced_res)
-    # plt.imshow(distance), plt.colorbar(),plt.show()
-    distance = distance/distance.max() if distance.max()!=0 else distance
 
-    # plt.imshow(distance);plt.show()
-
-    #Last
-    distance_255 = (distance*255).astype(np.uint8)
-    roi_ori = (roi_ori/roi_ori.max()*255)
-    # plt.imshow(roi_ori+distance);plt.show()
-    # ori_now = roi_ori+distance_255
+    raced[raced>0] = 1
     ori_now = roi_ori
     # plt.imshow(new_ori);plt.show()
 
     # rotate it back
 
     rotated_ori = rotated_ori/rotated_ori.max()*255
-    rotated_label[extTop[1]-n:extTop[1]+size+n,extLeft[0]-n:extRight[0]+n] += distance
+    rotated_label[extTop[1]-n:extTop[1]+size+n,extLeft[0]-n:extRight[0]+n] = raced
     rotated_ori[extTop[1]-n:extTop[1]+size+n,extLeft[0]-n:extRight[0]+n] = ori_now
 
     # # rotate it with tetha-90
@@ -298,7 +285,7 @@ def necro_segment(label, ori, threshold):
     # rotate it back
 
     rotated_ori = rotated_ori/rotated_ori.max()*255
-    rotated_label[extTop[1]-n:extTop[1]+size+n,extLeft[0]-n:extRight[0]+n] += distance
+    rotated_label[extTop[1]-n:extTop[1]+size+n,extLeft[0]-n:extRight[0]+n] = distance
     rotated_ori[extTop[1]-n:extTop[1]+size+n,extLeft[0]-n:extRight[0]+n] = ori_now
 
     # # rotate it with tetha-90
