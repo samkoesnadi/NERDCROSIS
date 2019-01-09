@@ -1,6 +1,7 @@
 import numpy as np
 import cv2 as cv
 import itk
+import nibabel as nib
 import time
 from skimage.segmentation import find_boundaries
 from scipy.ndimage.morphology import distance_transform_edt
@@ -19,8 +20,8 @@ def d_necro_seg(oris, labels):
 
     # change to 3D coordinate space [x,y,z] (check if labels==1)
     ## logical threshold = 119187 // 2 - n
-    one_pixel_neighbours = 500
-    distance_sample = 15
+    one_pixel_neighbours = 200
+    distance_sample = 5
 
     labels_flat = np.where(labels>0)
 
@@ -37,12 +38,10 @@ def d_necro_seg(oris, labels):
 
     # Black removed and is used for noise instead.
     unique_labels = set(labels_db)
-
+    unique_labels.remove(-1)
 
     # save it to labels_ready in [x,y,z] format
     labels_ready = []
-    print('Labels detected in input images: ',unique_labels)
-    if (-1 in unique_labels): unique_labels.remove(-1)
     for k in zip(unique_labels):
 
         class_member_mask = (labels_db == k)
@@ -56,7 +55,6 @@ def d_necro_seg(oris, labels):
     # find line to check the rotation angle
     labels = labels/labels.max()
     labels_res = np.zeros_like(labels)
-    a = 0
     for i, label_ready in enumerate(labels_ready):
 
         # now output the ROI
@@ -71,24 +69,27 @@ def d_necro_seg(oris, labels):
 
         ori_ROI = oris[z_axis0.min():z_axis0.max()+1,y_axis0.min():y_axis0.max()+1,x_axis0.min():x_axis0.max()+1]
 
+
         # SKIP THE 3-D ROTATION TRANSFORM (TO-DO)
 
         # continue with layer per layer neucrosis segmentation
         from skimage.filters import threshold_otsu
         threshold = threshold_otsu(ori_ROI/ori_ROI.max())
 
-        from necro_segment import femurhead_segment
+        from necro_segment import necro_segment
         end_label_3d = np.zeros_like(label_ROI)
         index = 0
         for ori, label in zip(ori_ROI,label_ROI):
-            try: end_label = femurhead_segment(label, ori, threshold)
+            try: end_label = necro_segment(label, ori, threshold)
             except: end_label = np.zeros_like(label)
 
             # if you want to digitalize the value than uncomment this
             end_label = np.ceil(end_label)
 
+            end_label[end_label>0] *= i+1
             end_label_3d[index] = (end_label)
             index += 1
+
         labels_res[z_axis0.min():z_axis0.max()+1,y_axis0.min():y_axis0.max()+1,x_axis0.min():x_axis0.max()+1] = end_label_3d
 
     print("--- %s seconds ---" % (time.time() - start_time))
@@ -111,24 +112,27 @@ def d_necro_seg(oris, labels):
 # read the image
 from os import listdir
 from os.path import isfile, join
-mypath = 'niftynet/temp'
+mypath = 'niftynet/models/1/output'
 oris_path = "niftynet/data/"
 segment_filenames = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 
 print(segment_filenames)
 
 for segment_filename in segment_filenames:
-    if (segment_filename[-11:]!='_Label.gipl'): continue
-    # if(segment_filename!='0_niftynet_out.nii.gz'): continue
-    prefix = segment_filename[0:-10]
+    if (segment_filename[-7:]!='.nii.gz'): continue
+    prefix = segment_filename[0:-19]
     oris_file_path = join(oris_path, prefix+'Coronal.gipl')
     segment_file_path = join(mypath, segment_filename)
-    print('\n\nAnalyzing: ',oris_file_path,'\n')
-    img = itk.imread(segment_file_path, 0)
-    labels = itk.GetArrayFromImage(img)
+
+    img = nib.load(segment_file_path)
+    data = img.get_fdata()
+    labels = np.zeros((data.shape[2],data.shape[1],data.shape[0]))
+    for foo in range(data.shape[2]):
+        labels[foo] = data[:,:,foo,0,0].T
     oris_itk = itk.imread(oris_file_path, 0)
     oris = itk.GetArrayFromImage(oris_itk)
 
+    #print(oris.shape, labels.shape)
     segment = d_necro_seg(oris, labels)
 
     # segment = segment.astype(np.float32)
