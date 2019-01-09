@@ -141,5 +141,5 @@ for segment_filename in segment_filenames:
     # OutputImageType = type(oris_itk)
     # cast_new_segment = itk.CastImageFilter[InputImageType, OutputImageType].New(new_segment)
 
-    print("Writing neucro segment in ",join(mypath, prefix+"_Label.gipl"))
-    itk.imwrite(new_segment, join(mypath, prefix+"_Label.gipl"))
+    print("Writing neucro segment in ",join(mypath, prefix+"Label.gipl"))
+    itk.imwrite(new_segment, join(mypath, prefix+"Label.gipl"))
