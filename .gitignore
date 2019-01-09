@@ -1,3 +1,6 @@
 Datasets/
 niftynet/data
+niftynet/data_old
+niftynet/models
+!niftynet/models/1/output
 sample_2ds

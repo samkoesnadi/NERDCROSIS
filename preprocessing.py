@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
 
             ori_arr = itk.GetArrayFromImage(ori_image)
-            ori, segment = interpolate(ori_arr, segment, 200, 200, 40)
+            ori, segment = interpolate(ori_arr, segment, 200, 200, 34)
 
             segment = segment.astype(np.uint8)
             ori = ori.astype(np.float32)

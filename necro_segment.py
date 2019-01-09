@@ -9,6 +9,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from scipy import ndimage
 from skimage.filters import threshold_otsu
 
+
 def necro_segment(label, ori, threshold):
     ori = (ori/ori.max()*255).astype(np.uint8)
     label = (label/label.max()*255).astype(np.uint8)
@@ -26,6 +27,7 @@ def necro_segment(label, ori, threshold):
 
     pad = 50
     label = np.pad(label, (pad,), 'mean')
+    label_first = label.copy()/label.max()
     ori = np.pad(ori, (pad,), 'mean')
     # # find label contour (the outter skin)
     # plt.imshow(label), plt.show()
@@ -42,18 +44,21 @@ def necro_segment(label, ori, threshold):
     from math import atan,pi
     from skimage.transform import rotate
     rows,cols = label.shape[:2]
-    [vx,vy,x,y] = cv.fitLine(max_contour_outter, cv.DIST_L2, 0,0.01,0.01)
-    lefty = int((-x*vy/vx) + y)
-    righty = int(((cols-x)*vy/vx)+y)
-    # cv.line(label,(cols-1,righty),(0,lefty),(0,255,0),2)
+    [vx,vy,x,y] = cv.fitLine(max_contour_outter, cv.DIST_L1, 0,0.01,0.01)
+    #lefty = int((-x*vy/vx) + y)
+    #righty = int(((cols-x)*vy/vx)+y)
+    #print(vy,vx, (cols-1)/(righty-lefty))
+    #cv.line(label,(cols-1,righty),(0,lefty),(0,255,0),2)
     # plt.imshow(label), plt.show()
-    tetha = atan(vy/vx)/pi*180
+    tetha = atan((vy/vx)[0])/pi*180
+    tetha_fst = ((tetha+90)) if (tetha<0) else -(90-tetha) if (tetha>0) else 0
+    #print(tetha_fst)
     #rotate it with tetha+90
-    new_label = rotate(label, tetha+90, clip=True)
+    new_label = rotate(label, tetha_fst, clip=True)
     rotated_label = new_label.copy()
-    new_ori = rotate(ori, tetha+90, mode="edge",clip=True)
+    new_ori = rotate(ori, tetha_fst, mode="edge",clip=True)
     rotated_ori = new_ori.copy()
-
+    #plt.imshow(new_label), plt.show()
     # convert label to boolean data type (1 and 0)
     label = new_label.astype(np.uint8)
     label[label!=1] = 0
@@ -85,8 +90,10 @@ def necro_segment(label, ori, threshold):
     # plt.imshow(roi_label),plt.colorbar(),plt.show()
 
     # OTSU Thresholding
-    # from skimage.filters import threshold_otsu
-    # threshold = threshold_otsu(roi_ori)
+    beta = 0.8
+    from skimage.filters import threshold_otsu
+    threshold2 = threshold_otsu(roi_ori)
+    threshold = (1-beta)*threshold + beta*threshold2
     thresholded = roi_ori > threshold
     # plt.imshow(thresholded),plt.show()
 
@@ -139,10 +146,13 @@ def necro_segment(label, ori, threshold):
     rotated_ori[extTop[1]-n:extTop[1]+size+n,extLeft[0]-n:extRight[0]+n] = ori_now
 
     # # rotate it with tetha-90
-    end_label = rotate(rotated_label, -tetha-90)
-    end_ori = rotate(rotated_ori, -tetha-90, mode="edge")
+    end_label = rotate(rotated_label, -tetha_fst)
+    end_ori = rotate(rotated_ori, -tetha_fst, mode="edge")
     # end_label = rotated_label
     # end_ori = rotated_ori
+
+    # crop weird stuffs
+    end_label = end_label*label_first
 
     end_label = end_label[pad:-pad,pad:-pad]
     end_ori = end_ori[pad:-pad,pad:-pad]
@@ -184,3 +194,4 @@ def necro_segment(label, ori, threshold):
 # img = img*mask_grabcut[:,:,np.newaxis]
 #
 # plt.imshow(img);plt.show()
+
