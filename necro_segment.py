@@ -121,9 +121,9 @@ def femurhead_segment(label, ori, threshold):
         raced = racing_pixel(mask.copy(), n=1, alpha=0.9, beta=0.3, mode='constant', seperate_left_right=False)
     except:
         raced = mask
-    raced_res = np.bitwise_and(raced, (1-thresholded))
     plt.imshow(raced), plt.show()
-    plt.imshow(raced_res), plt.show()
+    import sys
+    sys.exit()
     # distance_transform_edt
     distance = ndimage.distance_transform_edt(raced_res)
     # plt.imshow(distance), plt.colorbar(),plt.show()
