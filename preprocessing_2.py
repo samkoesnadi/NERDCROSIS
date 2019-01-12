@@ -113,14 +113,14 @@ from os import listdir
 from os.path import isfile, join
 mypath = 'niftynet/data'
 oris_path = "niftynet/data/"
-segment_filenames = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+segment_filenames = sorted([f for f in listdir(mypath) if isfile(join(mypath, f))])
 
 print(segment_filenames)
 
 for segment_filename in segment_filenames:
-    if (segment_filename[-11:]!='_Label.gipl'): continue
+    if (segment_filename[-12:]!='_fLabel.gipl'): continue
     # if(segment_filename!='0_niftynet_out.nii.gz'): continue
-    prefix = segment_filename[0:-10]
+    prefix = segment_filename[0:-11]
     oris_file_path = join(oris_path, prefix+'Coronal.gipl')
     segment_file_path = join(mypath, segment_filename)
     print('\n\nAnalyzing: ',oris_file_path,'\n')
@@ -141,5 +141,5 @@ for segment_filename in segment_filenames:
     # OutputImageType = type(oris_itk)
     # cast_new_segment = itk.CastImageFilter[InputImageType, OutputImageType].New(new_segment)
 
-    print("Writing neucro segment in ",join(mypath, prefix+"Label.gipl"))
-    itk.imwrite(new_segment, join(mypath, prefix+"Label.gipl"))
+    print("Writing neucro segment in ",join(mypath, prefix+"fLabel.gipl"))
+    itk.imwrite(new_segment, join(mypath, prefix+"fLabel.gipl"))

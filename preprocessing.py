@@ -22,15 +22,17 @@ directory_of_datasets = "./Datasets" #datasets folder
 picture_save_dir = 'data'
 output_dir_0 = join('./niftynet/', picture_save_dir)
 ori_image_filename = "coronal.gipl"
-onlyfiles = ["femurseg.gipl"]# this is the files names that you want to extract
+onlyfiles = ["femurseg.gipl","necro_seg.gipl"]# this is the files names that you want to extract
 postfix_ori_out = "Coronal"
-postfix_seg_out = "Label"
-which_patients = listdir(directory_of_datasets)
+postfix_seg_out = ["fLabel","nLabel"]
+which_patients = sorted(listdir(directory_of_datasets))
 exclude_patients = ["P0011","P0013","P0018"]
 
 z = 48
 n = 512 #Side length of square image
 pad_out_percentage = 20
+
+out_log = open("log_namelink.txt","w+")
 
 if __name__ == '__main__':
     file_index = 0
@@ -39,27 +41,25 @@ if __name__ == '__main__':
         if (which_patient in exclude_patients): continue
         dir_patient = join(directory_of_datasets,which_patient)
         output_dir = join(output_dir_0, which_patient)
-        for fi in onlyfiles: # fi is the file that we want to convert, e.g. t1_tse_cor.gipl
+        if (not exists(join(dir_patient, ori_image_filename))): print('There is no',join(dir_patient, ori_image_filename)); continue
+        print('Analyzing',(dir_patient))
+        ori_image = itk.imread(join(dir_patient, ori_image_filename))# this is the original MRI Pic
+        
+        ori_arr = itk.GetArrayFromImage(ori_image)
+        out_log.write(which_patient+" correspondens "+str(file_index)+"\n")
+        for i, fi in enumerate(onlyfiles): # fi is the file that we want to convert, e.g. t1_tse_cor.gipl
             temp_out_dir = (output_dir)
 
             if (not exists(join(dir_patient,fi))): print('There is no',join(dir_patient,fi)); continue
-            if (not exists(join(dir_patient, ori_image_filename))): print('There is no',join(dir_patient, ori_image_filename)); continue
-            print('Analyzing',(dir_patient))
+            # itk_image refers to the segmentation
             itk_image = itk.imread(join(dir_patient,fi))
-            ori_image = itk.imread(join(dir_patient, ori_image_filename))# this is the original MRI Pic
-
+            
 
             # Copy of itk.Image, data is copied
             segment = itk.GetArrayFromImage(itk_image) # here is the variable for segmented image
-            pad_ = int(pad_out_percentage/100*(segment.shape[0]//4))
-            segment = np.pad(segment,(pad_),'minimum')
-            segment_255 = np.interp(segment, (segment.min(), segment.max()), (0, 255))
-            segment_255 = segment_255.astype(np.uint8)
 
-
-            ori_arr = itk.GetArrayFromImage(ori_image)
-            ori, segment = interpolate(ori_arr, segment, 200, 200, 34)
-
+            #ori, segment = interpolate(ori_arr, segment, 200, 200, 34)
+            ori, segment = (ori_arr, segment)
             segment = segment.astype(np.uint8)
             ori = ori.astype(np.float32)
 
@@ -75,6 +75,8 @@ if __name__ == '__main__':
 
             print("Writing",join(output_dir_0,str(file_index)+'_'+postfix_ori_out+'.gipl'),'from',join(dir_patient,fi))
             itk.imwrite(cast_new_ori, join(output_dir_0,str(file_index)+'_'+postfix_ori_out+'.gipl'))
-            print("Writing",join(output_dir_0,str(file_index)+'_'+postfix_seg_out+'.gipl'))
-            itk.imwrite(new_segment, join(output_dir_0,str(file_index)+'_'+postfix_seg_out+'.gipl'))
-            file_index += 1
+            print("Writing",join(output_dir_0,str(file_index)+'_'+postfix_seg_out[i]+'.gipl'))
+            itk.imwrite(new_segment, join(output_dir_0,str(file_index)+'_'+postfix_seg_out[i]+'.gipl'))
+        file_index += 1
+
+out_log.close() 
