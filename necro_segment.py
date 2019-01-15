@@ -310,7 +310,37 @@ def necro_segment(label, ori, threshold):
     return end_label
 
 
+def find_femurhead_boundary(label):
+    '''
+    Return position of bounding box in format (top, bottom, left, right)
+    '''
+    label = (label/label.max()*255).astype(np.uint8)
 
+    pad = 50
+    label = np.pad(label, (pad,), 'mean')
+    label_first = label.copy()/label.max()
+    # # find label contour (the outter skin)
+    # plt.imshow(label), plt.show()
+    _, contours, _ = cv.findContours(label, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    max_contour_outter = 0
+    for i, cnt in enumerate(contours):
+        area = cv.contourArea(cnt)
+        area_ref = cv.contourArea(contours[max_contour_outter])
+        # print(area, area_ref)
+        if (area > area_ref): max_contour_outter = i
+    max_contour_outter = contours[max_contour_outter]
+
+    # Region the new_ori and also label to roi_ori
+    c = max_contour_outter
+    extLeft = tuple(c[c[:, :, 0].argmin()][0])
+    extRight = tuple(c[c[:, :, 0].argmax()][0])
+    extTop = tuple(c[c[:, :, 1].argmin()][0])
+    extBot = tuple(c[c[:, :, 1].argmax()][0])
+
+    size = extRight[0]-extLeft[0]
+    n = 0 # padding
+
+    return (extTop[1]-n,extTop[1]+size+n,extLeft[0]-n,extRight[0]+n)
 
 
 

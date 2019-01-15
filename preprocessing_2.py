@@ -85,6 +85,7 @@ def d_necro_seg(oris, labels):
             except: end_label = np.zeros_like(label)
 
             # if you want to digitalize the value than uncomment this
+            print(end_label.shape)
             end_label = np.ceil(end_label)
 
             end_label_3d[index] = (end_label)
