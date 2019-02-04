@@ -1,0 +1,26 @@
+Evaluation:
+
+- P0038_necro_seg.gipl::
+Confusion matrix:
+ [[6908704    1793]
+ [    281    1222]]
+Accuracy = 0.9996999421296296
+DSC = [0.99984992 0.54094732]
+
+
+- P0005_necro_seg.gipl::
+Confusion matrix:
+ [[3134636    1078]
+ [    286       0]]
+Accuracy = 0.9995650510204082
+DSC = [0.99978248 0.        ]
+
+
+- P0022_necro_seg.gipl::
+Confusion matrix:
+ [[5330683     228]
+ [    262      27]]
+Accuracy = 0.9999080882352941
+DSC = [0.99995404 0.09926471]
+
+

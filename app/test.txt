@@ -1,0 +1,303 @@
+NiftyNet version 0.4.0
+[CUSTOM]
+-- num_classes: 5
+-- output_prob: False
+-- label_normalisation: True
+-- softmax: True
+-- min_sampling_ratio: 0
+-- compulsory_labels: (0, 1)
+-- rand_samples: 0
+-- min_numb_labels: 1
+-- proba_connect: True
+-- evaluation_units: foreground
+-- inferred: ()
+-- label: ('label',)
+-- weight: ()
+-- image: ('image',)
+-- sampler: ()
+-- name: net_segment
+[CONFIG_FILE]
+-- path: /home/WIN-UNI-DUE/sjsakoes/Nerdcrosis/niftynet/extensions/configs/config1.ini
+[IMAGE]
+-- csv_file: 
+-- path_to_search: data
+-- filename_contains: ('_Coronal',)
+-- filename_not_contains: ()
+-- filename_removefromid: 
+-- interp_order: 1
+-- loader: simpleitk
+-- pixdim: (1.0, 1.0, 1.0)
+-- axcodes: ()
+-- spatial_window_size: (160, 160, 40)
+[LABEL]
+-- csv_file: 
+-- path_to_search: data
+-- filename_contains: ('_Label',)
+-- filename_not_contains: ()
+-- filename_removefromid: 
+-- interp_order: 0
+-- loader: simpleitk
+-- pixdim: (1.0, 1.0, 1.0)
+-- axcodes: ()
+-- spatial_window_size: (160, 160, 40)
+[SYSTEM]
+-- cuda_devices: ""
+-- num_threads: 4
+-- num_gpus: 1
+-- model_dir: /home/WIN-UNI-DUE/sjsakoes/Nerdcrosis/niftynet/models/1
+-- dataset_split_file: ./dataset_split.csv
+-- event_handler: ('model_saver', 'model_restorer', 'sampler_threading', 'apply_gradients', 'output_interpreter', 'console_logger', 'tensorboard_logger')
+-- iteration_generator: iteration_generator
+-- action: training
+[NETWORK]
+-- name: dense_vnet
+-- activation_function: prelu
+-- batch_size: 6
+-- smaller_final_batch_mode: pad
+-- decay: 5e-06
+-- reg_type: L2
+-- volume_padding_size: (0, 0, 0)
+-- volume_padding_mode: symmetric
+-- window_sampling: resize
+-- queue_length: 5
+-- multimod_foreground_type: and
+-- histogram_ref_file: standardisation_models.txt
+-- norm_type: percentile
+-- cutoff: (0.01, 0.99)
+-- foreground_type: otsu_plus
+-- normalisation: True
+-- whitening: True
+-- normalise_foreground_only: False
+-- weight_initializer: he_normal
+-- bias_initializer: zeros
+-- keep_prob: 1.0
+-- weight_initializer_args: {}
+-- bias_initializer_args: {}
+[TRAINING]
+-- optimiser: adam
+-- sample_per_volume: 1
+-- rotation_angle: ()
+-- rotation_angle_x: ()
+-- rotation_angle_y: ()
+-- rotation_angle_z: ()
+-- scaling_percentage: ()
+-- bias_field_range: (-0.5, 0.5)
+-- bf_order: 1
+-- random_flipping_axes: (1,)
+-- do_elastic_deformation: True
+-- num_ctrl_points: 6
+-- deformation_sigma: 15.0
+-- proportion_to_deform: 0.5
+-- lr: 0.0005
+-- loss_type: Dice
+-- starting_iter: -1
+-- save_every_n: 130
+-- tensorboard_every_n: 20
+-- max_iter: 10001
+-- max_checkpoints: 100
+-- validation_every_n: 50
+-- validation_max_iter: 1
+-- exclude_fraction_for_validation: 0.1
+-- exclude_fraction_for_inference: 0.1
+-- dataset_split_file: dataset_split.csv
+[INFERENCE]
+-- spatial_window_size: (160, 160, 40)
+-- inference_iter: -1
+-- dataset_to_infer: 
+-- save_seg_dir: output
+-- output_postfix: _niftynet_out
+-- output_interp_order: 0
+-- border: (0, 0, 0)
+[1mINFO:niftynet:[0m set initial_iter to 2800 based on checkpoints
+[1mINFO:niftynet:[0m starting segmentation application
+[1mINFO:niftynet:[0m `csv_file = ` not found, writing to "/home/WIN-UNI-DUE/sjsakoes/Nerdcrosis/niftynet/models/1/image.csv" instead.
+[1mINFO:niftynet:[0m Overwriting existing: "/home/WIN-UNI-DUE/sjsakoes/Nerdcrosis/niftynet/models/1/image.csv".
+[1mINFO:niftynet:[0m [image] search file folders, writing csv file /home/WIN-UNI-DUE/sjsakoes/Nerdcrosis/niftynet/models/1/image.csv
+[1mINFO:niftynet:[0m `csv_file = ` not found, writing to "/home/WIN-UNI-DUE/sjsakoes/Nerdcrosis/niftynet/models/1/label.csv" instead.
+[1mINFO:niftynet:[0m Overwriting existing: "/home/WIN-UNI-DUE/sjsakoes/Nerdcrosis/niftynet/models/1/label.csv".
+[1mINFO:niftynet:[0m [label] search file folders, writing csv file /home/WIN-UNI-DUE/sjsakoes/Nerdcrosis/niftynet/models/1/label.csv
+[1mWARNING:niftynet:[0m Loading from existing partitioning file /home/WIN-UNI-DUE/sjsakoes/Nerdcrosis/niftynet/models/1/dataset_split.csv, ignoring partitioning ratios.
+[1mINFO:niftynet:[0m 
+
+Number of subjects 18, input section names: ['subject_id', 'image', 'label']
+Dataset partitioning:
+-- training 14 cases (77.78%),
+-- validation 2 cases (11.11%),
+-- inference 2 cases (11.11%).
+
+reading datasets headers |----------| 0.0% reading datasets headers |----------| 7.1% reading datasets headers |*---------| 14.3% reading datasets headers |**--------| 21.4% reading datasets headers |**--------| 28.6% reading datasets headers |***-------| 35.7% reading datasets headers |****------| 42.9% reading datasets headers |*****-----| 50.0% reading datasets headers |*****-----| 57.1% reading datasets headers |******----| 64.3% reading datasets headers |*******---| 71.4% reading datasets headers |*******---| 78.6% reading datasets headers |********--| 85.7% reading datasets headers |*********-| 92.9% [1mINFO:niftynet:[0m Image reader: loading 14 subjects from sections ('image',) as input [image]
+[1mINFO:niftynet:[0m Image reader: loading 14 subjects from sections ('label',) as input [label]
+reading datasets headers |----------| 0.0% reading datasets headers |*****-----| 50.0% [1mINFO:niftynet:[0m Image reader: loading 2 subjects from sections ('image',) as input [image]
+[1mINFO:niftynet:[0m Image reader: loading 2 subjects from sections ('label',) as input [label]
+[1mINFO:niftynet:[0m normalisation histogram reference models ready for image:('image',)
+[1mINFO:niftynet:[0m label mapping ready for label:('label',), 5 classes
+[1mINFO:niftynet:[0m normalisation histogram reference models ready for image:('image',)
+[1mINFO:niftynet:[0m label mapping ready for label:('label',), 5 classes
+[1mINFO:niftynet:[0m reading size of preprocessed images
+[1mWARNING:niftynet:[0m sampler queue_length should be larger than batch_size, defaulting to batch_size * 5.0 (30).
+[1mINFO:niftynet:[0m initialised resize sampler {'image': (1, 160, 160, 40, 1, 1), 'image_location': (1, 7), 'label': (1, 160, 160, 40, 1, 1), 'label_location': (1, 7)} 
+[1mINFO:niftynet:[0m reading size of preprocessed images
+[1mWARNING:niftynet:[0m sampler queue_length should be larger than batch_size, defaulting to batch_size * 5.0 (30).
+[1mINFO:niftynet:[0m initialised resize sampler {'image': (1, 160, 160, 40, 1, 1), 'image_location': (1, 7), 'label': (1, 160, 160, 40, 1, 1), 'label_location': (1, 7)} 
+[1mWARNING:niftynet:[0m From /home/WIN-UNI-DUE/sjsakoes/.local/lib/python3.6/site-packages/niftynet/engine/application_initializer.py:106: calling VarianceScaling.__init__ (from tensorflow.python.ops.init_ops) with distribution=normal is deprecated and will be removed in a future version.
+Instructions for updating:
+`normal` is a deprecated alias for `truncated_normal`
+[1mINFO:niftynet:[0m using DenseVNet
+[1mINFO:niftynet:[0m Initialising Dataset from 14 subjects...
+[1mINFO:niftynet:[0m Initialising Dataset from 2 subjects...
+[1mINFO:niftynet:[0m starting from iter 2800
+[1mINFO:niftynet:[0m Accessing /home/WIN-UNI-DUE/sjsakoes/Nerdcrosis/niftynet/models/1/models/model.ckpt-2800
+[1mINFO:niftynet:[0m Restoring parameters from /home/WIN-UNI-DUE/sjsakoes/Nerdcrosis/niftynet/models/1/models/model.ckpt-2800
+[1mINFO:niftynet:[0m training iter 2801, loss=0.6362578272819519 (173.000154s)
+[1mINFO:niftynet:[0m training iter 2802, loss=0.6543092727661133 (7.675441s)
+[1mINFO:niftynet:[0m training iter 2803, loss=0.6526287794113159 (11.534868s)
+[1mINFO:niftynet:[0m training iter 2804, loss=0.6371333003044128 (24.448953s)
+[1mINFO:niftynet:[0m training iter 2805, loss=0.6218723654747009 (18.730043s)
+[1mINFO:niftynet:[0m training iter 2806, loss=0.6730803847312927 (22.394681s)
+[1mINFO:niftynet:[0m training iter 2807, loss=0.6547800898551941 (30.751330s)
+[1mINFO:niftynet:[0m training iter 2808, loss=0.6422870755195618 (14.067700s)
+[1mINFO:niftynet:[0m training iter 2809, loss=0.6477791666984558 (17.509194s)
+[1mINFO:niftynet:[0m training iter 2810, loss=0.6504384875297546 (29.332236s)
+[1mINFO:niftynet:[0m training iter 2811, loss=0.6416831612586975 (7.214748s)
+[1mINFO:niftynet:[0m training iter 2812, loss=0.5868479609489441 (23.523412s)
+[1mINFO:niftynet:[0m training iter 2813, loss=0.6516575217247009 (15.447071s)
+[1mINFO:niftynet:[0m training iter 2814, loss=0.5979241728782654 (9.226494s)
+[1mINFO:niftynet:[0m training iter 2815, loss=0.660667896270752 (8.911614s)
+[1mINFO:niftynet:[0m training iter 2816, loss=0.6210964918136597 (6.207934s)
+[1mINFO:niftynet:[0m training iter 2817, loss=0.645043671131134 (25.683387s)
+[1mINFO:niftynet:[0m training iter 2818, loss=0.6547327637672424 (10.839151s)
+[1mINFO:niftynet:[0m training iter 2819, loss=0.6521226763725281 (42.243182s)
+[1mINFO:niftynet:[0m training iter 2820, loss=0.6506099700927734 (24.348661s)
+[1mINFO:niftynet:[0m training iter 2821, loss=0.6624156832695007 (12.484038s)
+[1mINFO:niftynet:[0m training iter 2822, loss=0.6154695749282837 (11.220549s)
+[1mINFO:niftynet:[0m training iter 2823, loss=0.6082872748374939 (10.075027s)
+[1mINFO:niftynet:[0m training iter 2824, loss=0.6446025371551514 (21.459293s)
+[1mINFO:niftynet:[0m training iter 2825, loss=0.6341818571090698 (16.599380s)
+[1mINFO:niftynet:[0m training iter 2826, loss=0.6334333419799805 (22.842815s)
+[1mINFO:niftynet:[0m training iter 2827, loss=0.6186507344245911 (20.419069s)
+[1mINFO:niftynet:[0m training iter 2828, loss=0.647578775882721 (11.747694s)
+[1mINFO:niftynet:[0m training iter 2829, loss=0.6238455176353455 (12.462453s)
+[1mINFO:niftynet:[0m training iter 2830, loss=0.6653285026550293 (12.363526s)
+[1mINFO:niftynet:[0m training iter 2831, loss=0.6109724044799805 (33.926032s)
+[1mINFO:niftynet:[0m training iter 2832, loss=0.6304759383201599 (7.339983s)
+[1mINFO:niftynet:[0m training iter 2833, loss=0.5932984948158264 (10.468027s)
+[1mINFO:niftynet:[0m training iter 2834, loss=0.6633532047271729 (9.061993s)
+[1mINFO:niftynet:[0m training iter 2835, loss=0.6344994902610779 (30.730937s)
+[1mINFO:niftynet:[0m training iter 2836, loss=0.6189262866973877 (11.468631s)
+[1mINFO:niftynet:[0m training iter 2837, loss=0.6396130919456482 (20.813797s)
+[1mINFO:niftynet:[0m training iter 2838, loss=0.6455851197242737 (16.719167s)
+[1mINFO:niftynet:[0m training iter 2839, loss=0.6554561257362366 (21.165515s)
+[1mINFO:niftynet:[0m training iter 2840, loss=0.6478545069694519 (11.542121s)
+[1mINFO:niftynet:[0m training iter 2841, loss=0.6306552290916443 (14.747147s)
+[1mINFO:niftynet:[0m training iter 2842, loss=0.6231622695922852 (13.871387s)
+[1mINFO:niftynet:[0m training iter 2843, loss=0.6213157773017883 (20.647204s)
+[1mINFO:niftynet:[0m training iter 2844, loss=0.6328900456428528 (20.355140s)
+[1mINFO:niftynet:[0m training iter 2845, loss=0.6119758486747742 (20.803236s)
+[1mINFO:niftynet:[0m training iter 2846, loss=0.5948577523231506 (18.043267s)
+[1mINFO:niftynet:[0m training iter 2847, loss=0.6236401200294495 (34.627231s)
+[1mINFO:niftynet:[0m training iter 2848, loss=0.6661825776100159 (20.221253s)
+[1mINFO:niftynet:[0m training iter 2849, loss=0.6306933760643005 (18.097304s)
+[1mINFO:niftynet:[0m training iter 2850, loss=0.6650851368904114 (15.456641s)
+[1mINFO:niftynet:[0m     validation iter 2850, loss=0.6861555576324463 (47.283277s)
+[1mINFO:niftynet:[0m training iter 2851, loss=0.6150748133659363 (12.977769s)
+[1mINFO:niftynet:[0m training iter 2852, loss=0.6235571503639221 (11.814146s)
+[1mINFO:niftynet:[0m training iter 2853, loss=0.6181438565254211 (13.111538s)
+[1mINFO:niftynet:[0m training iter 2854, loss=0.6448144316673279 (6.291657s)
+[1mINFO:niftynet:[0m training iter 2855, loss=0.647443950176239 (11.787106s)
+[1mINFO:niftynet:[0m training iter 2856, loss=0.6275743842124939 (11.289150s)
+[1mINFO:niftynet:[0m training iter 2857, loss=0.6273440718650818 (8.713726s)
+[1mINFO:niftynet:[0m training iter 2858, loss=0.6198549270629883 (11.015087s)
+[1mINFO:niftynet:[0m training iter 2859, loss=0.674828827381134 (21.371327s)
+[1mINFO:niftynet:[0m training iter 2860, loss=0.6149266362190247 (26.768306s)
+[1mINFO:niftynet:[0m iter 2860 saved: /home/WIN-UNI-DUE/sjsakoes/Nerdcrosis/niftynet/models/1/models/model.ckpt
+[1mINFO:niftynet:[0m training iter 2861, loss=0.6279498934745789 (7.765758s)
+[1mINFO:niftynet:[0m training iter 2862, loss=0.6445876359939575 (6.128503s)
+[1mINFO:niftynet:[0m training iter 2863, loss=0.6014840602874756 (19.136495s)
+[1mINFO:niftynet:[0m training iter 2864, loss=0.6280892491340637 (7.756555s)
+[1mINFO:niftynet:[0m training iter 2865, loss=0.6448985934257507 (11.245503s)
+[1mINFO:niftynet:[0m training iter 2866, loss=0.6298579573631287 (22.276580s)
+[1mINFO:niftynet:[0m training iter 2867, loss=0.6390723586082458 (10.153164s)
+[1mINFO:niftynet:[0m training iter 2868, loss=0.6111355423927307 (29.659961s)
+[1mINFO:niftynet:[0m training iter 2869, loss=0.6575450897216797 (18.869740s)
+[1mINFO:niftynet:[0m training iter 2870, loss=0.6331117153167725 (23.911989s)
+[1mINFO:niftynet:[0m training iter 2871, loss=0.629673182964325 (28.323691s)
+[1mINFO:niftynet:[0m training iter 2872, loss=0.5927650332450867 (8.500104s)
+[1mINFO:niftynet:[0m training iter 2873, loss=0.6086453795433044 (9.706387s)
+[1mINFO:niftynet:[0m training iter 2874, loss=0.6326627731323242 (15.435297s)
+[1mINFO:niftynet:[0m training iter 2875, loss=0.6566453576087952 (33.171201s)
+[1mINFO:niftynet:[0m training iter 2876, loss=0.6255118250846863 (18.459180s)
+[1mINFO:niftynet:[0m training iter 2877, loss=0.6266815066337585 (27.203164s)
+[1mINFO:niftynet:[0m training iter 2878, loss=0.6444705128669739 (14.726261s)
+[1mINFO:niftynet:[0m training iter 2879, loss=0.6087433695793152 (5.748369s)
+[1mINFO:niftynet:[0m training iter 2880, loss=0.6570190191268921 (45.913392s)
+[1mINFO:niftynet:[0m training iter 2881, loss=0.6387317776679993 (20.225579s)
+[1mINFO:niftynet:[0m training iter 2882, loss=0.6501758694648743 (20.054881s)
+[1mINFO:niftynet:[0m training iter 2883, loss=0.5987146496772766 (13.606899s)
+[1mINFO:niftynet:[0m training iter 2884, loss=0.6411309242248535 (33.507161s)
+[1mINFO:niftynet:[0m training iter 2885, loss=0.646852433681488 (21.116718s)
+[1mINFO:niftynet:[0m training iter 2886, loss=0.6108483672142029 (18.249279s)
+[1mINFO:niftynet:[0m training iter 2887, loss=0.6377452611923218 (29.475234s)
+[1mINFO:niftynet:[0m training iter 2888, loss=0.627683162689209 (16.243497s)
+[1mINFO:niftynet:[0m training iter 2889, loss=0.6564333438873291 (18.847496s)
+[1mINFO:niftynet:[0m training iter 2890, loss=0.6225809454917908 (13.798710s)
+[1mINFO:niftynet:[0m training iter 2891, loss=0.638317883014679 (20.373888s)
+[1mINFO:niftynet:[0m training iter 2892, loss=0.6292377710342407 (13.132525s)
+[1mINFO:niftynet:[0m training iter 2893, loss=0.6478404998779297 (21.930889s)
+[1mINFO:niftynet:[0m training iter 2894, loss=0.6365125179290771 (32.918304s)
+[1mINFO:niftynet:[0m training iter 2895, loss=0.6168875098228455 (18.790187s)
+[1mINFO:niftynet:[0m training iter 2896, loss=0.6750527024269104 (24.475024s)
+[1mINFO:niftynet:[0m training iter 2897, loss=0.6222215294837952 (6.240624s)
+[1mINFO:niftynet:[0m training iter 2898, loss=0.6119673848152161 (14.209629s)
+[1mINFO:niftynet:[0m training iter 2899, loss=0.6430928707122803 (16.071211s)
+[1mINFO:niftynet:[0m training iter 2900, loss=0.6453590393066406 (17.026679s)
+[1mINFO:niftynet:[0m     validation iter 2900, loss=0.689310610294342 (19.463094s)
+[1mINFO:niftynet:[0m training iter 2901, loss=0.6687960624694824 (11.581778s)
+[1mINFO:niftynet:[0m training iter 2902, loss=0.6072036623954773 (15.907693s)
+[1mINFO:niftynet:[0m training iter 2903, loss=0.5983756184577942 (21.178775s)
+[1mINFO:niftynet:[0m training iter 2904, loss=0.6006114482879639 (18.391657s)
+[1mINFO:niftynet:[0m training iter 2905, loss=0.6164599657058716 (8.114948s)
+[1mINFO:niftynet:[0m training iter 2906, loss=0.6185566782951355 (14.527310s)
+[1mINFO:niftynet:[0m training iter 2907, loss=0.6551511287689209 (18.159284s)
+[1mINFO:niftynet:[0m training iter 2908, loss=0.6024413108825684 (27.079251s)
+[1mINFO:niftynet:[0m training iter 2909, loss=0.6368530988693237 (14.126441s)
+[1mINFO:niftynet:[0m training iter 2910, loss=0.6091918349266052 (35.922853s)
+[1mINFO:niftynet:[0m training iter 2911, loss=0.6226034164428711 (12.028568s)
+[1mINFO:niftynet:[0m training iter 2912, loss=0.6373710036277771 (30.295188s)
+[1mINFO:niftynet:[0m training iter 2913, loss=0.6510796546936035 (29.307276s)
+[1mINFO:niftynet:[0m training iter 2914, loss=0.6742169260978699 (15.439231s)
+[1mINFO:niftynet:[0m training iter 2915, loss=0.6107359528541565 (16.334375s)
+[1mINFO:niftynet:[0m training iter 2916, loss=0.6358528733253479 (8.480134s)
+[1mINFO:niftynet:[0m training iter 2917, loss=0.647622287273407 (17.827655s)
+[1mINFO:niftynet:[0m training iter 2918, loss=0.6069548726081848 (16.574778s)
+[1mINFO:niftynet:[0m training iter 2919, loss=0.6161160469055176 (8.119805s)
+[1mINFO:niftynet:[0m training iter 2920, loss=0.6330072283744812 (15.998676s)
+[1mINFO:niftynet:[0m training iter 2921, loss=0.6407924890518188 (16.142670s)
+[1mINFO:niftynet:[0m training iter 2922, loss=0.6176478266716003 (14.248049s)
+[1mINFO:niftynet:[0m training iter 2923, loss=0.608008861541748 (7.431906s)
+[1mINFO:niftynet:[0m training iter 2924, loss=0.6372446417808533 (14.715207s)
+[1mINFO:niftynet:[0m training iter 2925, loss=0.6530458927154541 (16.235287s)
+[1mINFO:niftynet:[0m training iter 2926, loss=0.6255205273628235 (30.854906s)
+[1mINFO:niftynet:[0m training iter 2927, loss=0.6105918884277344 (12.023235s)
+[1mINFO:niftynet:[0m training iter 2928, loss=0.6305211186408997 (18.583672s)
+[1mINFO:niftynet:[0m training iter 2929, loss=0.6198203563690186 (13.450151s)
+[1mINFO:niftynet:[0m training iter 2930, loss=0.5839871764183044 (10.836063s)
+[1mINFO:niftynet:[0m training iter 2931, loss=0.6452656388282776 (25.307560s)
+[1mINFO:niftynet:[0m training iter 2932, loss=0.6414852142333984 (10.869244s)
+[1mINFO:niftynet:[0m training iter 2933, loss=0.6491310596466064 (31.697037s)
+[1mINFO:niftynet:[0m training iter 2934, loss=0.6093001365661621 (10.674248s)
+[1mINFO:niftynet:[0m training iter 2935, loss=0.6614047884941101 (18.760384s)
+[1mINFO:niftynet:[0m training iter 2936, loss=0.6279259324073792 (20.722587s)
+[1mINFO:niftynet:[0m training iter 2937, loss=0.6019766926765442 (5.975927s)
+[1mINFO:niftynet:[0m training iter 2938, loss=0.6582022905349731 (27.883744s)
+[1mINFO:niftynet:[0m training iter 2939, loss=0.6199284195899963 (14.500883s)
+[1mINFO:niftynet:[0m training iter 2940, loss=0.6066848635673523 (16.583701s)
+[1mINFO:niftynet:[0m training iter 2941, loss=0.6406200528144836 (14.280686s)
+[1mINFO:niftynet:[0m training iter 2942, loss=0.6616107821464539 (50.085437s)
+[1mINFO:niftynet:[0m training iter 2943, loss=0.6291710138320923 (21.870408s)
+[1mINFO:niftynet:[0m training iter 2944, loss=0.6267108917236328 (20.475090s)
+[1mINFO:niftynet:[0m training iter 2945, loss=0.6397407054901123 (23.904516s)
+[1mINFO:niftynet:[0m training iter 2946, loss=0.6640899777412415 (9.318526s)
+[1mINFO:niftynet:[0m training iter 2947, loss=0.6100425124168396 (32.716883s)
+[1mINFO:niftynet:[0m training iter 2948, loss=0.6140742897987366 (49.275675s)
+[1mINFO:niftynet:[0m training iter 2949, loss=0.6356354355812073 (14.828440s)
+[1mINFO:niftynet:[0m training iter 2950, loss=0.6595627665519714 (86.881840s)

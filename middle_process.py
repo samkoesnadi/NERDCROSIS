@@ -97,7 +97,7 @@ segment_filenames = sorted([f for f in listdir(oris_path) if isfile(join(oris_pa
 
 print(segment_filenames)
 
-segment_filenames = ["6_fLabel.gipl"]
+#segment_filenames = ["6_fLabel.gipl"]
 
 f = open('npy_middle/positions.txt', 'w')
 f.truncate(0)

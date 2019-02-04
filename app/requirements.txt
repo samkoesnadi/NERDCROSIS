@@ -1,0 +1,11 @@
+numpy
+opencv-python
+itk
+nibabel
+skimage
+scipy
+matplotlib
+sklearn
+tensorflow-gpu
+niftynet
+SimpleITK
